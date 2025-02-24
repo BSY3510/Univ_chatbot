@@ -24,7 +24,7 @@ def set_gemini_model(temperature: float, api_key=None):
         gemini_config = llm_config.get("gemini", {})
         llm = ChatGoogleGenerativeAI(
             model=gemini_config.get("MODEL_NAME", ""),
-            google_api_key=api_key if api_key is not None else gemini_config.get("api_key", {}).get("GOOGLE_API_KEY0", ""),
+            google_api_key=api_key if api_key is not None else gemini_config.get("api_key", {}).get("GOOGLE_API_KEY5", ""),
             temperature=temperature,
         )
     except Exception as e:
