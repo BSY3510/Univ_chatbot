@@ -1,0 +1,122 @@
+[
+  {
+    "name": "컴퓨터공학과",
+    "base_url": "https://cse.kangwon.ac.kr",
+    "start_url": "/cse/community/undergraduate-notice.do?mode=list&article.offset=1220",
+    "university": "강원대학교",
+    "department": "컴퓨터공학과",
+    "category": "공지사항",
+
+    "pagination_type": "offset",
+    "page_id": "article.offset",
+    "page_limit_key": "articleLimit", 
+    
+    "selectors": {
+      "board_path": "div.b-title-box a",
+      "top_post_class": "artclTop", 
+      "article_id_key": "articleNo",
+
+      "title_path": ".b-title-box span:not([class])",
+      "content_path": "div.b-content-box div.fr-view",
+      "writer_path": ".b-writer-box span:last-child",
+      "date_path": ".b-date-box span:last-child",
+      "date_prefix": "" 
+    }
+  },
+  {
+    "name": "AI융합학과",
+    "base_url": "https://ai.kangwon.ac.kr",
+    "start_url": "/ai/community/notice.do?mode=list&&articleLimit=10&article.offset=0",
+    "university": "강원대학교",
+    "department": "AI융합학과",
+    "category": "공지사항",
+
+    "pagination_type": "offset",
+    "page_id": "article.offset",
+    "page_limit_key": "articleLimit",
+    
+    "selectors": {
+      "board_path": "div.b-title-box a",
+      "top_post_class": "artclTop",
+      "article_id_key": "articleNo",
+
+      "title_path": ".b-title-box span:not([class])",
+      "content_path": "div.b-content-box div.fr-view",
+      "writer_path": ".b-writer-box span:last-child",
+      "date_path": ".b-date-box span:last-child",
+      "date_prefix": ""
+    }
+  },
+  {
+    "name": "전기전자공학과",
+    "base_url": "https://eee.kangwon.ac.kr",
+    "start_url": "/eee/community/notice.do?mode=list&&articleLimit=20&article.offset=0",
+    "university": "강원대학교",
+    "department": "전기전자공학과",
+    "category": "공지사항",
+
+    "pagination_type": "offset",
+    "page_id": "article.offset",
+    "page_limit_key": "articleLimit",
+    
+    "selectors": {
+      "board_path": "div.b-title-box a",
+      "top_post_class": "artclTop",
+      "article_id_key": "articleNo",
+
+      "title_path": ".b-title-box span:not([class])",
+      "content_path": "div.b-content-box div.fr-view",
+      "writer_path": ".b-writer-box span:last-child",
+      "date_path": ".b-date-box span:last-child",
+      "date_prefix": ""
+    }
+  },
+  {
+    "name": "전자공학과",
+    "base_url": "https://ee.kangwon.ac.kr",
+    "start_url": "/ee/community/notice01.do?mode=list&&articleLimit=10&article.offset=0",
+    "university": "강원대학교",
+    "department": "전자공학과",
+    "category": "공지사항",
+
+    "pagination_type": "offset",
+    "page_id": "article.offset",
+    "page_limit_key": "articleLimit",
+    
+    "selectors": {
+      "board_path": "div.b-title-box a",
+      "top_post_class": "artclTop",
+      "article_id_key": "articleNo",
+
+      "title_path": ".b-title-box span:not([class])",
+      "content_path": "div.b-content-box div.fr-view",
+      "writer_path": ".b-writer-box span:last-child",
+      "date_path": ".b-date-box span:last-child",
+      "date_prefix": ""
+    }
+  },
+  {
+    "name": "디지털밀리터리학과",
+    "base_url": "https://military.kangwon.ac.kr",
+    "start_url": "/military/professor/notice.do?mode=list&&articleLimit=10&article.offset=0",
+    "university": "강원대학교",
+    "department": "디지털밀리터리학과",
+    "category": "공지사항",
+
+    "pagination_type": "offset",
+    "page_id": "article.offset",
+    "page_limit_key": "articleLimit",
+    
+    "selectors": {
+      "board_path": "div.b-title-box a",
+      "top_post_class": "artclTop",
+      "article_id_key": "articleNo",
+
+      "title_path": ".b-title-box span:not([class])",
+      "content_path": "div.b-content-box div.fr-view",
+      "writer_path": ".b-writer-box span:last-child",
+      "date_path": ".b-date-box span:last-child",
+      "date_prefix": ""
+    }
+  }
+]
