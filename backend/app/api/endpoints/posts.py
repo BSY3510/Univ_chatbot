@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 
 from app.db import models, schemas
 from app.db.session import SessionLocal
@@ -16,13 +16,18 @@ def get_db():
 
 @router.get("/posts", response_model=List[schemas.Post])
 def read_posts(
+    department: Optional[str] = None,
     skip: int = 0, 
-    limit: int = 10, 
+    limit: int = 20,
     db: Session = Depends(get_db)
 ):
+    query = db.query(models.Post)
+    
+    if department:
+        query = query.filter(models.Post.department == department)
+    
     posts = (
-        db.query(models.Post)
-        .order_by(models.Post.id.desc())
+        query.order_by(models.Post.id.desc())
         .offset(skip)
         .limit(limit)
         .all()
