@@ -187,3 +187,6 @@ yarn-error.log*
 
 # secrets
 session.py
+
+# data files
+backend/recommendation_model.pkl

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const API_URL = 'http://localhost:8000/api/posts';
 
@@ -75,7 +76,7 @@ function HomePage() {
         ))}
       </div>
       <hr />
-
+ 
       {loading && <div>로딩 중...</div>}
       {error && <div>{error}</div>}
       {!loading && !error && (
@@ -83,9 +84,11 @@ function HomePage() {
           {posts.map(post => (
             <li key={post.id} style={{ marginBottom: '10px' }}>
               <strong>[{post.department}]</strong>
-              <a href={post.url} target="_blank" rel="noopener noreferrer">
+              
+              <Link to={`/posts/${post.id}`}>
                 {post.title}
-              </a>
+              </Link>
+              
               <span style={{ color: '#888', marginLeft: '10px' }}>
                 ({post.created_at})
               </span>

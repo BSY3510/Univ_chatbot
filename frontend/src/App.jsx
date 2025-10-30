@@ -1,10 +1,16 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import PostDetailPage from './pages/PostDetailPage';
 
 function App() {
   return (
     <div className="App">
-      <HomePage /> {/* HomePage 컴포넌트 렌더링 */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        
+        <Route path="/posts/:postId" element={<PostDetailPage />} />
+      </Routes>
     </div>
   );
 }
