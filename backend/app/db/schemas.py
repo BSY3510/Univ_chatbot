@@ -11,6 +11,7 @@ class PostBase(BaseModel):
     department: str
     category: str
     article_id: str
+    content: Optional[str] = None
 
 class Post(PostBase):
     class Config:
