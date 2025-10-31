@@ -17,3 +17,11 @@ class Post(PostBase):
     class Config:
         from_attributes = True 
         # orm_mode = True
+        
+class ChatbotRequest(BaseModel):
+    query: str
+
+class ChatbotResponse(BaseModel):
+    post_id: int
+    post_title: str
+    text: str
