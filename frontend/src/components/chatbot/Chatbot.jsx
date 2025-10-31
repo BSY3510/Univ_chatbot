@@ -47,17 +47,30 @@ function Chatbot() {
         query: userQuery
       });
 
-      if (response.data && response.data.length > 0) {
+      if (response.data && response.data.answer) {
+        
         setMessages(prev => [
           ...prev,
           {
             sender: 'bot',
-            type: 'response',
-            content: response.data
+            type: 'text',
+            content: response.data.answer
           }
         ]);
+
+        if (response.data.sources && response.data.sources.length > 0) {
+           setMessages(prev => [
+            ...prev,
+            {
+              sender: 'bot',
+              type: 'response',
+              content: response.data.sources 
+            }
+          ]);
+        }
+
       } else {
-        setMessages(prev => [
+         setMessages(prev => [
           ...prev,
           {
             sender: 'bot',
@@ -84,46 +97,43 @@ function Chatbot() {
 
   return (
     <div>
-      {/* 1. 챗봇 아이콘 버튼 */}
       <div className="chatbot-icon" onClick={toggleChat}>
         {isOpen ? '✕' : '💬'}
       </div>
 
-      {/* 2. 챗봇 채팅창 */}
       <div className={`chatbot-window ${isOpen ? 'open' : ''}`}>
-        
-        {/* 헤더 */}
         <div className="chatbot-header">
-          강원대 AI 챗봇
+          강원대 AI 챗봇 (Gemini)
         </div>
         
-        {/* 메시지 목록 */}
         <div className="message-list" ref={messageListRef}>
           {messages.map((msg, index) => (
             <div key={index} className={`message ${msg.sender}`}>
               
-              {/* [분기] 봇 응답(AI 검색 결과) 렌더링 */}
+              {/* 봇 응답 렌더링 로직 */}
               {msg.type === 'response' ? (
                 <div>
-                  <p>AI가 찾은 가장 관련성이 높은 답변입니다.</p>
+                  <p style={{fontSize: '0.9em', color: '#666', marginTop: '-5px', marginBottom: '8px'}}>
+                    ↓ 답변의 근거가 된 자료입니다.
+                  </p>
+                  {/* msg.content는 이제 sources 리스트입니다. */}
                   {msg.content.map(item => (
                     <div key={item.post_id} className="bot-response-card">
-                      {/* 상세 페이지로 이동하는 Link */}
                       <Link to={`/posts/${item.post_id}`}>
                         [{item.post_title}]
                       </Link>
-                      <p>{item.text}</p> {/* AI가 찾은 원문 텍스트 */}
+                      <p>{item.text}</p>
                     </div>
                   ))}
                 </div>
               ) : (
-                // [분기] 일반 텍스트 메시지 렌더링
-                msg.content
+                <div style={{ whiteSpace: 'pre-wrap' }}>
+                  {msg.content}
+                </div>
               )}
             </div>
           ))}
 
-          {/* AI가 답변 중일 때 로딩 스피너 표시 */}
           {isLoading && (
             <div className="message bot loading">
               <div className="spinner dot1"></div>
@@ -133,7 +143,6 @@ function Chatbot() {
           )}
         </div>
         
-        {/* 메시지 입력창 */}
         <form className="chatbot-input-form" onSubmit={handleSend}>
           <input
             type="text"
