@@ -39,7 +39,7 @@ def read_posts(
     if department:
         query = query.filter(models.Post.department == department)
     posts = (
-        query.order_by(models.Post.id.desc())
+        query.order_by(models.Post.article_id.desc())
         .offset(skip)
         .limit(limit)
         .all()
