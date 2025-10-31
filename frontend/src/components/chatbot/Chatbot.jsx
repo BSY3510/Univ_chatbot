@@ -122,7 +122,7 @@ function Chatbot() {
                       
                       <p>
                         {item.text.length > 150 
-                          ? `${item.text.substring(0, 150)}...` 
+                          ? `${item.text.substring(0, 50)}...` 
                           : item.text}
                       </p>
                     </div>
