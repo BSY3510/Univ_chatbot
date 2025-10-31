@@ -190,3 +190,7 @@ session.py
 
 # data files
 backend/recommendation_model.pkl
+backend/knowledge_base.pkl
+
+# prompt files
+prompts.yaml

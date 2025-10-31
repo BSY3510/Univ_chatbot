@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 class PostBase(BaseModel):
     id: int
@@ -15,5 +15,16 @@ class PostBase(BaseModel):
 
 class Post(PostBase):
     class Config:
-        from_attributes = True 
-        # orm_mode = True
+        from_attributes = True
+
+class ChatbotRequest(BaseModel):
+    query: str
+
+class ChatbotSource(BaseModel):
+    post_id: int
+    post_title: str
+    text: str
+
+class GeminiChatbotResponse(BaseModel):
+    answer: str
+    sources: List[ChatbotSource]
