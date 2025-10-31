@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './Chatbot.css';
+import ReactMarkdown from 'react-markdown';
+import './Chatbot.css'; 
 
 const API_CHATBOT_URL = 'http://localhost:8000/api/chatbot';
 
@@ -48,16 +49,15 @@ function Chatbot() {
       });
 
       if (response.data && response.data.answer) {
-        
         setMessages(prev => [
           ...prev,
           {
             sender: 'bot',
             type: 'text',
-            content: response.data.answer
+            content: response.data.answer 
           }
         ]);
-
+        
         if (response.data.sources && response.data.sources.length > 0) {
            setMessages(prev => [
             ...prev,
@@ -68,7 +68,6 @@ function Chatbot() {
             }
           ]);
         }
-
       } else {
          setMessages(prev => [
           ...prev,
@@ -79,7 +78,6 @@ function Chatbot() {
           }
         ]);
       }
-
     } catch (error) {
       console.error("챗봇 API 오류:", error);
       setMessages(prev => [
@@ -103,7 +101,7 @@ function Chatbot() {
 
       <div className={`chatbot-window ${isOpen ? 'open' : ''}`}>
         <div className="chatbot-header">
-          강원대 AI 챗봇 (Gemini)
+          강원대 AI 챗봇
         </div>
         
         <div className="message-list" ref={messageListRef}>
@@ -116,19 +114,23 @@ function Chatbot() {
                   <p style={{fontSize: '0.9em', color: '#666', marginTop: '-5px', marginBottom: '8px'}}>
                     ↓ 답변의 근거가 된 자료입니다.
                   </p>
-                  {/* msg.content는 이제 sources 리스트입니다. */}
                   {msg.content.map(item => (
                     <div key={item.post_id} className="bot-response-card">
                       <Link to={`/posts/${item.post_id}`}>
                         [{item.post_title}]
                       </Link>
-                      <p>{item.text}</p>
+                      
+                      <p>
+                        {item.text.length > 150 
+                          ? `${item.text.substring(0, 150)}...` 
+                          : item.text}
+                      </p>
                     </div>
                   ))}
                 </div>
               ) : (
                 <div style={{ whiteSpace: 'pre-wrap' }}>
-                  {msg.content}
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
                 </div>
               )}
             </div>
