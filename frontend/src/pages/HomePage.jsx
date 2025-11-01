@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const API_URL = 'http://localhost:8000/api/posts';
+const POSTS_PER_PAGE = 20;
+const PAGES_PER_GROUP = 10;
 
 const DEPARTMENTS = [
   '전체',
@@ -18,9 +20,14 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [selectedDept, setSelectedDept] = useState(
-    () => localStorage.getItem('selectedDept') || '전체'
-  );
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const selectedDept = searchParams.get('department') || 
+                       localStorage.getItem('selectedDept') || 
+                       '전체';
+
+  const startPage = Math.floor((currentPage - 1) / PAGES_PER_GROUP) * PAGES_PER_GROUP + 1;
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -29,7 +36,8 @@ function HomePage() {
         setError(null);
 
         const params = {
-          limit: 20
+          limit: POSTS_PER_PAGE,
+          skip: (currentPage - 1) * POSTS_PER_PAGE
         };
         
         if (selectedDept !== '전체') {
@@ -38,8 +46,6 @@ function HomePage() {
 
         const response = await axios.get(API_URL, { params });
         setPosts(response.data);
-        
-        localStorage.setItem('selectedDept', selectedDept);
 
       } catch (err) {
         setError('데이터를 불러오는 데 실패했습니다.');
@@ -50,10 +56,63 @@ function HomePage() {
     };
 
     fetchPosts();
-  }, [selectedDept]);
+  }, [selectedDept, currentPage]);
+
+  const updateSearchParams = (newPage, newDept) => {
+    const params = {};
+
+    if (newPage > 1) {
+        params.page = newPage;
+    }
+
+    if (newDept && newDept !== '전체') {
+        params.department = newDept;
+    }
+
+    setSearchParams(params);
+  }
 
   const handleDeptClick = (dept) => {
-    setSelectedDept(dept);
+    updateSearchParams(1, dept);
+    localStorage.setItem('selectedDept', dept);
+  };
+
+  const handlePageClick = (pageNumber) => {
+    updateSearchParams(pageNumber, selectedDept);
+  };
+
+  const handlePrevGroup = () => {
+    const prevGroupStartPage = Math.max(startPage - PAGES_PER_GROUP, 1);
+    updateSearchParams(prevGroupStartPage, selectedDept);
+  };
+
+  const handleNextGroup = () => {
+    if (posts.length === POSTS_PER_PAGE) {
+      const nextGroupStartPage = startPage + PAGES_PER_GROUP;
+      updateSearchParams(nextGroupStartPage, selectedDept);
+    }
+  };
+
+  const renderPageNumbers = () => {
+    return Array.from({ length: PAGES_PER_GROUP }, (_, i) => {
+      const pageNumber = startPage + i;
+
+      return (
+        <button
+          key={pageNumber}
+          onClick={() => handlePageClick(pageNumber)}
+          disabled={loading}
+          style={{
+            margin: '0 5px',
+            fontWeight: currentPage === pageNumber ? 'bold' : 'normal',
+            color: 'black',
+            backgroundColor: currentPage === pageNumber ? '#e0e0e0' : 'white'
+          }}
+        >
+          {pageNumber}
+        </button>
+      );
+    });
   };
 
   return (
@@ -97,6 +156,27 @@ function HomePage() {
           {posts.length === 0 && <li>표시할 게시물이 없습니다.</li>}
         </ul>
       )}
+
+      <hr />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px' }}>
+        <button 
+          onClick={handlePrevGroup}
+          disabled={startPage === 1 || loading}
+        >
+          &lt;&lt; 이전
+        </button>
+ 
+        <div style={{ margin: '0 10px' }}>
+          {renderPageNumbers()}
+        </div>
+        
+        <button 
+          onClick={handleNextGroup}
+          disabled={posts.length < POSTS_PER_PAGE || loading}
+        >
+          다음 &gt;&gt;
+        </button>
+      </div>
     </div>
   );
 }
